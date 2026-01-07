@@ -1,0 +1,16 @@
+name: hero_kernels_greens_convolution
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: kernels_convolution
+  n: 256
+
+greens:
+  ridge: 1.0e-12
+
+checks:
+  convolution_adjoint_pairing: true
+  rtol: 1.0e-7
+  atol: 1.0e-9

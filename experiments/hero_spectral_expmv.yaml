@@ -1,0 +1,14 @@
+name: hero_spectral_expmv
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: expmv
+  n: 64
+  t: 0.5
+
+checks:
+  compare_to_dense_expm: true
+  rtol: 1.0e-8
+  atol: 1.0e-10

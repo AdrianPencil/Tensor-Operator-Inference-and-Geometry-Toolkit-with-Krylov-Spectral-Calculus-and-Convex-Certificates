@@ -1,0 +1,21 @@
+name: hero_filter_functions_psd
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: psd_filtering
+  n: 1024
+  dt: 1.0e-3
+
+filters:
+  lowpass:
+    omega_c: 200.0
+  bandpass:
+    omega_lo: 100.0
+    omega_hi: 300.0
+
+checks:
+  parseval: true
+  rtol: 1.0e-7
+  atol: 1.0e-9

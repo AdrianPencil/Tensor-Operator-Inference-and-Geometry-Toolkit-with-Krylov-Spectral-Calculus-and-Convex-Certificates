@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1.15in]{geometry}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{physics}
+\usepackage{hyperref}
+
+\setstretch{1.12}
+
+% ----------------------------
+% Math macros (minimal)
+% ----------------------------
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\Id}{\mathbb{I}}
+\newcommand{\T}{^\mathsf{T}}
+\newcommand{\adj}{^{\ast}}
+\newcommand{\ip}[2]{\left\langle #1,\,#2\right\rangle}
+\newcommand{\normF}[1]{\left\lVert #1 \right\rVert_{\mathrm{F}}}
+\newcommand{\vecop}{\mathrm{vec}}
+\newcommand{\kron}{\otimes}
+
+\title{\textbf{Tensor Inference Geometry: Math-First Operator, Manifold, and Tensor-Network Tooling}}
+\author{tensor-inference-geometry (tig)}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present \emph{tensor-inference-geometry} (tig), a math-first library for tensor inference and geometry-aware optimization.
+The project is organized around operator-theoretic contracts (matvec and adjoint pairing), Fr\'echet-derivative views (JVP/VJP), matrix-free Krylov methods, matrix manifolds (Stiefel, Grassmann, fixed-rank), and tensor-network representations (MPS/MPO).
+Implementation is TensorFlow-first with float64, while preserving theoretical structure rather than default flattening.
+\end{abstract}
+
+\section{Scope and organizing principles}
+tig is designed as a theory-aligned codebase: the primary objects are multilinear maps, linear operators with adjoints, and structured tensor representations.
+
+\paragraph{Non-negotiable rules.}
+\begin{itemize}
+  \item \textbf{Math-first definitions:} every implementation is backed by an explicit operator identity.
+  \item \textbf{Adjoint pairing contract:} for operators $A$, enforce $\ip{Ax}{y} = \ip{x}{A\adj y}$.
+  \item \textbf{Matrix-free by default:} dense constructions are diagnostics only.
+  \item \textbf{Tensor structure is preserved:} use contraction algebra and structured formats when possible.
+\end{itemize}
+
+\section{Tensor spaces and multilinear maps}
+For spaces $V_1,\dots,V_k$, tensor products $V_1\kron\dots\kron V_k$ represent multilinear maps via the universal property.
+Coordinates $T_{a_1\dots a_k}$ are implemented as multi-index arrays and contractions are realized using Einstein summation.
+
+\section{Fr\'echet derivatives and sensitivity operators}
+For $F:X\to Y$, Fr\'echet differentiability at $x$ provides a bounded linear map $DF(x):X\to Y$ satisfying
+\begin{equation}
+  F(x+h) = F(x) + DF(x)[h] + o(\norm{h}).
+\end{equation}
+We expose two matrix-free primitives:
+\begin{align}
+  \text{JVP: } & v \mapsto DF(x)[v], \\
+  \text{VJP: } & u \mapsto DF(x)\adj[u],
+\end{align}
+together with the adjoint identity
+\begin{equation}
+  \ip{DF(x)[v]}{u}_Y = \ip{v}{DF(x)\adj[u]}_X.
+\end{equation}
+
+\section{Operator theory and Krylov solvers}
+A linear operator $A$ is represented by $(\mathrm{matvec}, \mathrm{rmatvec})$, enabling Krylov methods without forming matrices.
+For SPD systems, conjugate gradients (CG) applies to $Ax=b$ with convergence governed by conditioning.
+
+\section{Inverse problems and regularization}
+Given data $y$ and model $y \approx F(x)$, MAP-type objectives take the form
+\begin{equation}
+  \hat{x} = \arg\min_x \frac{1}{2\sigma^2}\norm{F(x)-y}^2 + \lambda R(x).
+\end{equation}
+tig includes proximal operators for standard regularizers and minimal ADMM/prox toolchains for convex structure.
+
+\section{Matrix manifolds and geometry-aware optimization}
+We implement retractions and tangent-space operations on matrix manifolds:
+\begin{align}
+  \mathrm{St}(n,p) &= \{X\in\RR^{n\times p}: X\T X = \Id_p\},\\
+  \mathrm{Gr}(n,p) &= \mathrm{St}(n,p)/\mathrm{O}(p).
+\end{align}
+Optimization uses Riemannian gradients and retractions (for example QR-based).
+
+\section{Tensor networks}
+Tensor networks provide structured representations avoiding exponential blowup:
+\begin{itemize}
+  \item MPS for vectors in $(\RR^d)^{\kron L}$
+  \item MPO for operators in tensor-product spaces
+\end{itemize}
+Core checks compare contractions to dense reconstructions on small instances.
+
+\section{Stochastic processes, filtering, and spectral framing}
+SDE tooling centers around It\^{o} increments and Euler--Maruyama discretizations, with baseline linear-Gaussian filtering.
+Spectral modules expose expmv, resolvent operators, and trace/logdet proxies to support operator calculus.
+
+\section{Compute contracts and reproducibility}
+The code treats compute constraints as mathematical invariants:
+vectorization identities, layout descriptors, and FLOP/byte proxies accompany correctness checks.
+All stochastic components use explicit RNG objects for deterministic replay.
+
+\section{Conclusion}
+tig is a coherent spine connecting tensor algebra, operator theory, inverse problems, geometry, and structured computation.
+The repository is designed to remain math-first while enabling practical experiments through TensorFlow-backed tensor operations.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

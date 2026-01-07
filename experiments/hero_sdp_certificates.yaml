@@ -1,0 +1,13 @@
+name: hero_sdp_certificates
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: small_sdp
+  n: 10
+  constraints: 5
+
+checks:
+  psd_certificate: true
+  gap_proxy: true

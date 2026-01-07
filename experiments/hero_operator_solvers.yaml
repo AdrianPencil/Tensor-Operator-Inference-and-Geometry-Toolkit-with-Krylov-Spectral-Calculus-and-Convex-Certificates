@@ -1,0 +1,19 @@
+name: hero_operator_solvers
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: spd_linear_system
+  n: 256
+  condition_number: 1.0e4
+  rhs_norm: 1.0
+
+solver:
+  kind: cg
+  tol: 1.0e-10
+  max_iter: 400
+
+report:
+  track_residuals: true
+  track_iterations: true

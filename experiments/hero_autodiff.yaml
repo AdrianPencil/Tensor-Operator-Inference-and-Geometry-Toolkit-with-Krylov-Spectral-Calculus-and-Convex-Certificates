@@ -1,0 +1,15 @@
+name: hero_autodiff
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: autodiff_sanity
+  input_shape: [32]
+  output_shape: [32]
+
+checks:
+  jvp_vjp_consistency: true
+  finite_difference_step: 1.0e-6
+  rtol: 1.0e-6
+  atol: 1.0e-9

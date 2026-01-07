@@ -1,0 +1,23 @@
+name: hero_inverse_phase
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: linear_inverse
+  m: 128
+  n: 64
+  sigma: 0.01
+
+solver:
+  kind: map_gd
+  lam: 1.0e-3
+  regularizer: l2
+  tol_grad: 1.0e-8
+  max_iter: 250
+  linesearch:
+    kind: armijo
+    step0: 1.0
+    c1: 1.0e-4
+    shrink: 0.5
+    max_steps: 30

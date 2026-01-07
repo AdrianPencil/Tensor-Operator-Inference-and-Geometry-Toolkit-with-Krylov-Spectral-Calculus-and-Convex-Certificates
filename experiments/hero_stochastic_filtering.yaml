@@ -1,0 +1,18 @@
+name: hero_stochastic_filtering
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: kalman_filter
+  state_dim: 4
+  obs_dim: 2
+  t_steps: 50
+
+noise:
+  q_scale: 1.0e-2
+  r_scale: 1.0e-1
+
+report:
+  track_mean: true
+  track_cov: true

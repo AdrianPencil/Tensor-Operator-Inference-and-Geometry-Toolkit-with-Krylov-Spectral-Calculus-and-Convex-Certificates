@@ -1,0 +1,16 @@
+name: hero_tensor_networks
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: mps_mpo_demo
+  length: 6
+  phys_dim: 2
+  bond_dim: 4
+
+checks:
+  dense_reconstruction: true
+  inner_consistency: true
+  rtol: 1.0e-8
+  atol: 1.0e-10

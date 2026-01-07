@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "tensor-inference-geometry"
+version: "0.1.0"
+date-released: "2025-12-31"
+authors:
+  - family-names: "Pencil"
+    given-names: "Adrian"
+license: "MIT"
+repository-code: "https://example.com/tensor-inference-geometry"
+keywords:
+  - tensors
+  - operator theory
+  - inverse problems
+  - manifolds
+  - autodiff

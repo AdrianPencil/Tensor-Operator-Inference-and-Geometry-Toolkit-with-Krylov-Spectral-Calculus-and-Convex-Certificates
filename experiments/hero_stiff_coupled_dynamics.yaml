@@ -1,0 +1,17 @@
+name: hero_stiff_coupled_dynamics
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: coupled_linear_system
+  n: 32
+  stiffness_scale: 1.0e3
+
+time:
+  dt: 1.0e-3
+  n_steps: 200
+
+checks:
+  stiffness_ratio: true
+  stability_proxy: true

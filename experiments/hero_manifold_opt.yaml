@@ -1,0 +1,14 @@
+name: hero_manifold_opt
+backend: tensorflow
+dtype: float64
+seed: 0
+
+problem:
+  kind: stiefel_alignment
+  n: 64
+  p: 8
+
+solver:
+  kind: riemannian_gd
+  max_iter: 200
+  tol_grad: 1.0e-8
